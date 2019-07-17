@@ -1,6 +1,6 @@
 # ghost-node
 
-###requirements: 
+### requirements: 
 
 a locally installed Mongodb at localhost:27017
 
