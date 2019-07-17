@@ -1,8 +1,14 @@
-const mongo = require('mongodb').MongoClient;
-const url = 'mongodb://localhost:27017';
+let cors = require('cors');
 let express = require('express');
+let bodyParser = require('body-parser')
 let apiRoutes = require("./api/routes");
 let app = express();
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+const mongo = require('mongodb').MongoClient;
+const url = 'mongodb://localhost:27017';
 
 var port = process.env.PORT || 8080;
 // Send message for default URL

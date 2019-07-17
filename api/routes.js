@@ -8,31 +8,54 @@ router.get('/', function (req, res) {
   });
 });
 
+router.get('/last-text', function(req, res) {
+  let db = res.locals.db;
+  let collection = db.collection("store-texts");
+
+  collection.find().toArray((err, items) => {
+    console.log(items);
+    res.json({
+      status: '/last-text API is Working!',
+      data: items[items.length - 1]
+    })
+  })
+
+
+});
+
+router.get('/stored-texts', function (req, res) {
+  let db = res.locals.db;
+  let collection = db.collection("store-texts");
+  collection.find().toArray((err, items) => {
+    console.log(items);
+    res.json({
+      status: '/stored-texts API is Working!',
+      data: items
+    })
+  })
+});
+
 router.post('/some-text', function (req, res) {
-
-  var db = res.locals.db;
-  const collection = db.collection("store-texts")
-
-  // Get our form values. These rely on the "name" attributes
-  var customText = req.body.customText;
-
-  // Submit to the DB
+  let db = res.locals.db;
+  let collection = db.collection("store-texts");
+  let customText = req.body.someText;
   collection.insert({
     "text": customText
   }, function (err, doc) {
     if (err) {
-      // If it failed, return error
       res.send("There was a problem adding the information to the database.");
     }
     else {
-      // And forward to success page
-      //res.redirect("userlist");
-
-      res.json({
-        status: 'API is Working',
-        message: 'Some Text was saved: ' + customText
-      });
-
+      console.log("Added Texr", req.body.someText);
+      collection.find().toArray((err, items) => {
+        console.log(items);
+        res.json({
+          status: '/some-text API is Working',
+          message: customText + " was added to the `store-texts` collection",
+          data: items,
+          lastText: items[items.length-1]
+        })
+      })
     }
   });
 });
